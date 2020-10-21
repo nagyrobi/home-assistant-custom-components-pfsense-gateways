@@ -42,3 +42,5 @@ sensor:
     - service: switch.turn_on
       entity_id: switch.relay_powercycle_modem
 ```
+
+Support forum: https://community.home-assistant.io/t/pfsense-stat-monitor/61070/55?u=robi
