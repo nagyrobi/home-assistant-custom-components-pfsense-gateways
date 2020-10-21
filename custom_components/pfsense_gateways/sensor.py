@@ -40,7 +40,7 @@ CONF_HOST = 'host'
 CONF_KEY = 'key'
 CONF_MONITORED_GATEWAYS = 'monitored_gateway_interfaces'
 
-SCAN_INTERVAL = timedelta(minutes=3)
+SCAN_INTERVAL = timedelta(minutes=2)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
@@ -133,16 +133,20 @@ class pfSensor(Entity):
             _LOGGER.debug("Erroneous JSON: %s", value)
             return
 
-        self.gw_name = parsed_json[self.if_name]['name']
-        self.monitorip = parsed_json[self.if_name]['monitorip']
-        self.sourceip = parsed_json[self.if_name]['sourceip']
-        self.delay = parsed_json[self.if_name]['delay']
-        self.loss = parsed_json[self.if_name]['loss']
-        self.status = parsed_json[self.if_name]['status']
+        try:
+            self.gw_name = parsed_json[self.if_name]['name']
+            self.monitorip = parsed_json[self.if_name]['monitorip']
+            self.sourceip = parsed_json[self.if_name]['sourceip']
+            self.delay = parsed_json[self.if_name]['delay']
+            self.loss = parsed_json[self.if_name]['loss']
+            self.status = parsed_json[self.if_name]['status']
 
-        if self.status == "okay":
-            self._state = True
-        else:
+            if self.status in ['okay', 'delay']:
+                self._state = True
+            else:
+                self._state = False
+
+        except KeyError:
             self._state = False
 
 
