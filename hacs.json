@@ -1,0 +1,6 @@
+{
+  "name": "pfSense gateways monitoring",
+  "content_in_root": false,
+  "render_readme": true,
+  "domains": ["pfsense_gateways"]
+}
