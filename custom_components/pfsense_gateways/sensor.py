@@ -145,10 +145,10 @@ class pfSensor(Entity):
                 self._state = True
             else:
                 self._state = False
-                self.status = 'missing'
 
         except KeyError:
             self._state = False
+            self.status = 'missing'
 
 class pfSenseError(Exception):
     pass
