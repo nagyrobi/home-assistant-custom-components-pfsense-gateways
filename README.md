@@ -27,18 +27,17 @@ sensor:
       data:
         message: "My internet just died"
 
-- alias: "pfSense GW-Down 3min"
+- alias: "pfSense GW-Down 5min"
   trigger:
     - platform: state
       entity_id: sensor.pfsense_gateway_gw_wan1
       to: 'False'
       for:
-        minutes: 3
-        seconds: 10
+        minutes: 5
   action:
     - service: notify.me
       data:
-        message: "My internet just died more than 3 minutes ago, rebooting ISP crap"
+        message: "My internet just died more than 5 minutes ago, rebooting ISP crap"
     - service: switch.turn_on
       entity_id: switch.relay_powercycle_modem
 ```
