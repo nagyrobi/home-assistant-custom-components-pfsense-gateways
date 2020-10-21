@@ -28,7 +28,6 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
-
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = "pfsense_gateways"
@@ -71,7 +70,6 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
 
     async_add_devices(devices, True)
 
-
 class pfSensor(Entity):
     """Implementation of a pfSensor sensor."""
 
@@ -87,28 +85,16 @@ class pfSensor(Entity):
         self.delay = None
         self.loss = None
         self.status = None
-        self._unit_of_measurement = None
-        self._device_class = None
 
     @property
     def name(self):
         """Return the name of the sensor."""
-        return '{} {}'.format(self._name, self.gw_name)
+        return '{0} {1}'.format(self._name, self.gw_name)
 
     @property
     def state(self):
         """Return the state of the device."""
         return self._state
-
-    @property
-    def unit_of_measurement(self):
-        """Return the unit of measurement of this entity, if any."""
-        return self._unit_of_measurement
-
-    @property
-    def device_class(self):
-        """Return the device class of this entity, if any."""
-        return self._device_class
 
     @property
     def icon(self):
