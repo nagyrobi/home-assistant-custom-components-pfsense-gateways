@@ -147,11 +147,6 @@ class pfSensor(Entity):
             _LOGGER.debug("Erroneous JSON: %s", value)
             return
 
-#        sensordata_values = parsed_json['sensordatavalues']
-#        for sensordata_value in sensordata_values:
-#            if sensordata_value['value_type'] == self.if_name:
-#                self._state = sensordata_value['value']
-
         self.gw_name = parsed_json[self.if_name]['name']
         self.monitorip = parsed_json[self.if_name]['monitorip']
         self.sourceip = parsed_json[self.if_name]['sourceip']
@@ -195,3 +190,5 @@ class pfSenseClient(object):
             _LOGGER.warning("REST request timeout")
             self.data = None
             raise pfSenseError
+
+## END
