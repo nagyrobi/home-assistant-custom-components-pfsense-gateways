@@ -1,7 +1,7 @@
 Support for pfsense gateways status monitoring using alexpmorris / pfsense-status-gateways-json script
 Check https://github.com/alexpmorris/pfsense-status-gateways-json on how to install it on pfSense
 
-** Example config
+## Example config
 
 ```yaml
 sensor:
@@ -14,7 +14,7 @@ sensor:
     - opt2
 ```
 
-** Example automations
+## Example automations
 ```yaml
 - alias: "pfSense GW-Down"
   trigger:
