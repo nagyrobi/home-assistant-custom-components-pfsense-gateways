@@ -1,0 +1,8 @@
+{
+  "domain": "pfsense_gateways",
+  "name": "pfSense Gateways",
+  "documentation": "https://github.com/nagyrobi/home-assistant-custom-components-pfsense-gateways",
+  "dependencies": [],
+  "codeowners": ["@nagyrobi"],
+  "requirements": []
+}
