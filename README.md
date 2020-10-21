@@ -23,9 +23,9 @@ sensor:
       entity_id: sensor.pfsense_gateway_gw_wan1
       to: 'False'
   action:
-    - service: notify.filelog
+    - service: notify.me
       data:
-        message: "{{ now().timestamp() | timestamp_custom('%Y-%m-%d %H:%M:%S') }} My internet just died"
+        message: "My internet just died"
 
 - alias: "pfSense GW-Down 3min"
   trigger:
@@ -36,9 +36,9 @@ sensor:
         minutes: 3
         seconds: 10
   action:
-    - service: notify.filelog
+    - service: notify.me
       data:
-        message: "{{ now().timestamp() | timestamp_custom('%Y-%m-%d %H:%M:%S') }} My internet just died more than 3 minutes ago, rebooting ISP crap"
+        message: "My internet just died more than 3 minutes ago, rebooting ISP crap"
     - service: switch.turn_on
       entity_id: switch.relay_powercycle_modem
 ```
