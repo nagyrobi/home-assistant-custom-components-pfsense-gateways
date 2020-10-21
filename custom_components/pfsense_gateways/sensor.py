@@ -6,7 +6,7 @@ Copyright (c) 2020 Robert Horvath-Arkosi
 
 Licensed under MIT. All rights reserved.
 
-https://github.com/nagyrobi
+https://github.com/nagyrobi/home-assistant-custom-components-pfsense-gateways
 """
 
 import logging
