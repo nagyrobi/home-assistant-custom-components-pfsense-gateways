@@ -9,47 +9,44 @@ Licensed under MIT. All rights reserved.
 https://github.com/nagyrobi/home-assistant-custom-components-pfsense-gateways
 """
 
-import logging
 import asyncio
-import aiohttp
-import async_timeout
-
 import json
-
+import logging
 from datetime import timedelta
 
+import aiohttp
+import async_timeout
+import homeassistant.helpers.config_validation as cv
 import requests
 import voluptuous as vol
-
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import (
-    CONF_NAME, CONF_RESOURCE, CONF_VERIFY_SSL)
+from homeassistant.const import CONF_NAME, CONF_RESOURCE, CONF_VERIFY_SSL
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import Entity
-import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = "pfsense_gateways"
 
-DEFAULT_NAME = 'pfSense gateway'
-DEFAULT_RESOURCE = 'http://{0}/status_gateways_json.php?key={1}'
-DEFAULT_KEY ='pfsense'
+DEFAULT_NAME = "pfSense gateway"
+DEFAULT_RESOURCE = "http://{0}/status_gateways_json.php?key={1}"
+DEFAULT_KEY = "pfsense"
 
-CONF_HOST = 'host'
-CONF_KEY = 'key'
-CONF_MONITORED_GATEWAYS = 'monitored_gateway_interfaces'
+CONF_HOST = "host"
+CONF_KEY = "key"
+CONF_MONITORED_GATEWAYS = "monitored_gateway_interfaces"
 
 SCAN_INTERVAL = timedelta(minutes=2)
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_HOST): cv.string,
-    vol.Required(CONF_MONITORED_GATEWAYS):
-        vol.All(cv.ensure_list),
-    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-    vol.Optional(CONF_RESOURCE, default=DEFAULT_RESOURCE): cv.string,
-    vol.Optional(CONF_KEY, default=DEFAULT_KEY): cv.string
-})
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+    {
+        vol.Required(CONF_HOST): cv.string,
+        vol.Required(CONF_MONITORED_GATEWAYS): vol.All(cv.ensure_list),
+        vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+        vol.Optional(CONF_RESOURCE, default=DEFAULT_RESOURCE): cv.string,
+        vol.Optional(CONF_KEY, default=DEFAULT_KEY): cv.string,
+    }
+)
 
 
 @asyncio.coroutine
@@ -70,6 +67,7 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
 
     async_add_devices(devices, True)
 
+
 class pfSensor(Entity):
     """Implementation of a pfSensor sensor."""
 
@@ -89,7 +87,7 @@ class pfSensor(Entity):
     @property
     def name(self):
         """Return the name of the sensor."""
-        return '{0} {1}'.format(self._name, self.gw_name)
+        return "{0} {1}".format(self._name, self.gw_name)
 
     @property
     def state(self):
@@ -99,18 +97,18 @@ class pfSensor(Entity):
     @property
     def icon(self):
         """Icon of the sensor, if class is None."""
-        return 'mdi:wan'
+        return "mdi:wan"
 
     @property
     def device_state_attributes(self):
         attributes = {}
-        attributes['name'] = self.gw_name
-        attributes['friendlyiface'] = self.if_name
-        attributes['sourceip'] = self.sourceip
-        attributes['monitorip'] = self.monitorip
-        attributes['delay'] = self.delay
-        attributes['loss'] = self.loss
-        attributes['status'] = self.status
+        attributes["name"] = self.gw_name
+        attributes["friendlyiface"] = self.if_name
+        attributes["sourceip"] = self.sourceip
+        attributes["monitorip"] = self.monitorip
+        attributes["delay"] = self.delay
+        attributes["loss"] = self.loss
+        attributes["status"] = self.status
 
         return attributes
 
@@ -134,21 +132,22 @@ class pfSensor(Entity):
             return
 
         try:
-            self.gw_name = parsed_json[self.if_name]['name']
-            self.monitorip = parsed_json[self.if_name]['monitorip']
-            self.sourceip = parsed_json[self.if_name]['sourceip']
-            self.delay = parsed_json[self.if_name]['delay']
-            self.loss = parsed_json[self.if_name]['loss']
-            self.status = parsed_json[self.if_name]['status']
+            self.gw_name = parsed_json[self.if_name]["name"]
+            self.monitorip = parsed_json[self.if_name]["monitorip"]
+            self.sourceip = parsed_json[self.if_name]["sourceip"]
+            self.delay = parsed_json[self.if_name]["delay"]
+            self.loss = parsed_json[self.if_name]["loss"]
+            self.status = parsed_json[self.if_name]["status"]
 
-            if self.status in ['okay', 'delay']:
+            if self.status in ["okay", "delay"]:
                 self._state = True
             else:
                 self._state = False
 
         except KeyError:
             self._state = False
-            self.status = 'missing'
+            self.status = "missing"
+
 
 class pfSenseError(Exception):
     pass
@@ -180,5 +179,6 @@ class pfSenseClient(object):
             _LOGGER.warning("REST request timeout")
             self.data = None
             raise pfSenseError
+
 
 ## END
