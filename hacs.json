@@ -2,6 +2,6 @@
   "name": "pfSense gateways monitoring",
   "content_in_root": false,
   "render_readme": true,
-  "domains": ["pfsense_gateways"]
+  "domains": ["pfsense_gateways"],
   "homeassistant": "0.115.0"
 }
