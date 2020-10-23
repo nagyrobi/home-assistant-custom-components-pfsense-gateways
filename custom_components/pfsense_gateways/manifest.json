@@ -2,6 +2,7 @@
   "domain": "pfsense_gateways",
   "name": "pfSense Gateways",
   "documentation": "https://github.com/nagyrobi/home-assistant-custom-components-pfsense-gateways",
+  "issue_tracker": "https://github.com/nagyrobi/home-assistant-custom-components-pfsense-gateways/issues",
   "dependencies": [],
   "codeowners": ["@nagyrobi"],
   "requirements": []
