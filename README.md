@@ -1,6 +1,8 @@
-Support for pfsense gateways status monitoring using alexpmorris / pfsense-status-gateways-json script
+## Gateways status for pfSense
 
-Check https://github.com/alexpmorris/pfsense-status-gateways-json on how to install it on pfSense
+Support for pfSense gateways status monitoring using alexpmorris / pfsense-status-gateways-json script. Check https://github.com/alexpmorris/pfsense-status-gateways-json on how to install it on pfSense.
+
+Returns `True` or `False` depending on the status of the gateway. Useful to trigger an external reboot or power-cycle of the ISP modem, or similar.
 
 ## Example config
 
