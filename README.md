@@ -9,7 +9,7 @@ Returns `True` or `False` depending on the status of the gateway. Useful to trig
 ```yaml
 sensor:
 - platform: pfsense_gateways
-  host: 172.22.215.254
+  host: 192.168.1.1
   name: pfSense gateway
   key: pfsense
   monitored_gateway_interfaces:
@@ -44,4 +44,4 @@ sensor:
       entity_id: switch.relay_powercycle_modem
 ```
 
-Support forum: https://community.home-assistant.io/t/pfsense-stat-monitor/61070/55?u=robi
+Support forum: https://community.home-assistant.io/t/pfsense-stat-monitor/61070/55
