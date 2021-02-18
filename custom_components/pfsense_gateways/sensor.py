@@ -20,7 +20,12 @@ import homeassistant.helpers.config_validation as cv
 import requests
 import voluptuous as vol
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import CONF_NAME, CONF_RESOURCE, CONF_VERIFY_SSL
+from homeassistant.const import (
+    CONF_NAME,
+    CONF_RESOURCE,
+    CONF_VERIFY_SSL,
+    STATE_UNAVAILABLE,
+)
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import Entity
 
@@ -116,7 +121,9 @@ class pfSensor(Entity):
         """Get the latest data from REST API and update the state."""
         try:
             await self.rest_client.async_update()
-        except pfSenseError:
+        except:  # pfSenseError:
+            self._state = STATE_UNAVAILABLE
+            self.status = "unavailable"
             value = None
             return
         value = self.rest_client.data
@@ -125,10 +132,14 @@ class pfSensor(Entity):
             parsed_json = json.loads(value)
             if not isinstance(parsed_json, dict):
                 _LOGGER.warning("JSON result was not a dictionary")
+                self._state = STATE_UNAVAILABLE
+                self.status = "unavailable"
                 return
         except ValueError:
             _LOGGER.warning("REST result could not be parsed as JSON")
             _LOGGER.debug("Erroneous JSON: %s", value)
+            self._state = STATE_UNAVAILABLE
+            self.status = "unavailable"
             return
 
         try:
@@ -139,14 +150,14 @@ class pfSensor(Entity):
             self.loss = parsed_json[self.if_name]["loss"]
             self.status = parsed_json[self.if_name]["status"]
 
-            if self.status in ["okay", "delay"]:
+            if self.status in ["okay", "delay", "online"]:
                 self._state = True
             else:
                 self._state = False
 
         except KeyError:
-            self._state = False
-            self.status = "missing"
+            self._state = STATE_UNAVAILABLE
+            self.status = "unavailable"
 
 
 class pfSenseError(Exception):
@@ -174,11 +185,17 @@ class pfSenseClient(object):
         except aiohttp.ClientError as err:
             _LOGGER.warning("REST request error: {0}".format(err))
             self.data = None
-            raise pfSenseError
+            self._state = STATE_UNAVAILABLE
+            self.status = "unavailable"
+        #            raise pfSenseError
         except asyncio.TimeoutError:
             _LOGGER.warning("REST request timeout")
             self.data = None
-            raise pfSenseError
+            self._state = STATE_UNAVAILABLE
+            self.status = "unavailable"
+
+
+#            raise pfSenseError
 
 
 ## END
