@@ -1,3 +1,5 @@
+Note: this plugin is unsupported. Use https://github.com/travisghansen/hass-pfsense instead, which supports much more features, including gateway status.
+
 ## Gateways status for pfSense
 
 Support for pfSense gateways status monitoring using alexpmorris / pfsense-status-gateways-json script. Check https://github.com/alexpmorris/pfsense-status-gateways-json on how to install it on pfSense.
