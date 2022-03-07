@@ -64,7 +64,7 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
     resource = config.get(CONF_RESOURCE).format(host, key)
 
     session = async_get_clientsession(hass, False)
-    rest_client = pfSenseClient(hass.loop, session, resource)
+    rest_client = pfSenseClient(session, resource)
 
     devices = []
     for variable in config[CONF_MONITORED_GATEWAYS]:
@@ -167,9 +167,8 @@ class pfSenseError(Exception):
 class pfSenseClient(object):
     """Class for handling the data retrieval."""
 
-    def __init__(self, loop, session, resource):
+    def __init__(self, session, resource):
         """Initialize the data object."""
-        self._loop = loop
         self._session = session
         self._resource = resource
         self.data = None
@@ -178,7 +177,7 @@ class pfSenseClient(object):
         """Get the latest data from pfSense service."""
         _LOGGER.debug("Get data from %s", str(self._resource))
         try:
-            with async_timeout.timeout(30, loop=self._loop):
+            with async_timeout.timeout(30):
                 response = await self._session.get(self._resource)
             self.data = await response.text()
             _LOGGER.debug("Received data: %s", str(self.data))
